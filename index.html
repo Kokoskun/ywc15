@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>YWC15</title>
+		<base href="/">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-title" content="YWC15">
+		<link rel="icon" type="image/x-icon" href="favicon.ico">
+		<meta property="og:url" content="https://ywc15.com">
+		<meta property="og:title" content="YWC15">
+		<meta property="og:image" content="ywc15/assets/image/logo/logo.png">
+		<link rel="manifest" href="manifest.json">
+		<meta name="msapplication-TileImage" content="ywc15/assets/image/logo/logo-ywc15-144.png" sizes="144x144">
+		<meta name="msapplication-TileColor" content="#f4f4f4">
+		<meta name="theme-color" content="#39729b"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<link rel="apple-touch-icon" href="ywc15/assets/image/logo/logo-ywc15-120.png">
+		<link rel="icon" href="ywc15/assets/image/logo/logo-ywc15-192.png" sizes="192x192">
+		<link rel="icon" href="ywc15/assets/image/logo/logo-ywc15-128.png" sizes="128x128">
+		<link href="https://fonts.googleapis.com/css?family=Athiti:300,400&amp;subset=latin-ext,thai" rel="stylesheet">
+		<link rel="stylesheet" type="text/css" href="ywc15/assets/css/materialdesignicons.min.css">
+		<link rel="stylesheet" type="text/css" href="ywc15/assets/css/bulma.css">
+		<link rel="stylesheet" type="text/css" href="ywc15/assets/css/style.css">
+	</head>
+	<body>
+		<style type="text/css">
+			body{
+				font-family: 'Athiti', sans-serif;
+			}
+		</style>
+		<div class="columns">
+			<div class="column"></div>
+			<div class="column is-four-fifths">
+				<nav class="level">
+					<p class="level-item has-text-centered is-hidden-mobile">
+						<a class="link is-info">หน้าแรก</a>
+					</p>
+					<p class="level-item has-text-centered is-hidden-mobile">
+						<a class="link is-info">รายชื่อผู้ผ่านเข้ารอบ</a>
+					</p>
+					<p class="level-item has-text-centered">
+						<img id="logo-ywc15" src="ywc15/assets/image/logo/logo.png">
+					</p>
+					<p class="level-item has-text-centered is-hidden-mobile">
+						<a class="link is-info">ต่ำแหน่งของผู้ผ่านเข้ารอบ</a>
+					</p>
+					<p class="level-item has-text-centered is-hidden-mobile">
+						<a class="link is-info">แชท</a>
+					</p>
+				</nav>
+			</div>
+			<div class="column"></div>
+		</div>
+
+
+
+<button id="loginBtn">Facebook Login</button>
+
+
+
+
+<button onclick="fbLogoutUser()">Facebook Logout</button>
+<div id="response"></div>
+
+
+
+		<script type="text/javascript" src="ywc15/assets/js/jquery-3.2.1.min.js"></script>
+		<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a18146ed9da9a96"></script>
+		<script type="text/javascript">
+
+			$("#logo-ywc15").hover(function(){
+				$("#logo-ywc15").attr("src","ywc15/assets/image/logo/logo-click.png");
+			},function(){
+				$("#logo-ywc15").attr("src","ywc15/assets/image/logo/logo.png");
+			});
+
+
+		window.fbAsyncInit = function(){
+		FB.init({
+		appId:'361211327657399',
+		cookie:true,
+		xfbml:true,
+		version:'{latest-api-version}'
+		});
+		FB.AppEvents.logPageView();
+		};
+		(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "https://connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));	 
+		window.fbAsyncInit=function(){
+		FB.init({
+		appId:'361211327657399',
+		xfbml:true,
+		version:'v2.2'
+		});
+		FB.getLoginStatus(function(response) {
+		if(response.status==='connected') {
+		document.getElementById('loginBtn').style.display = 'none';
+		getUserData();
+		}else{
+		//user is not authorized
+		}
+		});
+		};
+		function getUserData() {
+		FB.api('/me', function(response) {
+		document.getElementById('response').innerHTML = 'Hello ' + response.name;
+		});
+		}
+		(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.com/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+		document.getElementById('loginBtn').addEventListener('click',function(){
+		FB.login(function(response){
+		if(response.authResponse){
+		document.getElementById('loginBtn').style.display = 'none';
+		getUserData();
+		}
+		}, {scope: 'email,public_profile', return_scopes: true});
+		}, false);
+
+		function fbLogoutUser() {
+		FB.getLoginStatus(function(response) {
+		if (response && response.status === 'connected') {
+		FB.logout(function(response) {
+		document.location.reload();
+		});
+		}
+		});
+		}
+
+		</script>
+</body>
+</html>
