@@ -1,3 +1,15 @@
 .mt-1{
 	margin-top:1em;
 }
+.width-100{
+  width: 100%;
+}
+.mrl-1{
+  margin-right:0.1em;
+  margin-left:0.1em;
+  margin-bottom:0.25em;
+}
+.prl-2-5{
+  padding-left:2.5em;
+  padding-right:2.5em;
+}

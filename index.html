@@ -36,34 +36,72 @@
 			<div class="column is-four-fifths">
 				<nav class="level">
 					<p class="level-item has-text-centered is-hidden-mobile">
-						<a class="link is-info">หน้าแรก</a>
+						<a class="link is-info"><b><i class="mdi mdi-newspaper"></i> รายชื่อผู้ผ่านเข้ารอบ</b></a>
 					</p>
 					<p class="level-item has-text-centered is-hidden-mobile">
-						<a class="link is-info">รายชื่อผู้ผ่านเข้ารอบ</a>
+						<a class="link is-info"><b><i class="mdi mdi-emoticon"></i> ตรวจสอบอารมณ์</b></a>
 					</p>
 					<p class="level-item has-text-centered">
 						<img id="logo-ywc15" src="ywc15/assets/image/logo/logo.png">
 					</p>
 					<p class="level-item has-text-centered is-hidden-mobile">
-						<a class="link is-info">ต่ำแหน่งของผู้ผ่านเข้ารอบ</a>
+						<a class="link is-info"><b><i class="mdi mdi-crosshairs-gps"></i> แชร์ต่ำแหน่ง</b></a>
 					</p>
 					<p class="level-item has-text-centered is-hidden-mobile">
-						<a class="link is-info">แชท</a>
+						<a class="link is-info"><b><i class="mdi mdi-wechat"></i> แชท</b></a>
 					</p>
 				</nav>
 			</div>
 			<div class="column"></div>
 		</div>
+		<div class="columns">
+			<div class="column"></div>
+			<div class="column is-four-fifths">
+				<h1 class="has-text-centered is-size-4"><b>รายชื่อผู้ผ่านการคัดเลือก YWC15</b></h1>
+				<div class="field is-grouped mt-1 prl-2-5">
+					<p class="control is-expanded">
+						<input class="input" type="text" placeholder="ค้นหารายชื่อผู้ผ่านการคัดเลือก">
+					</p>
+					<p class="control">
+						<a class="button is-info">
+							&nbsp;<i class="mdi mdi-account-search"></i> Search&nbsp;
+						</a>
+					</p>
+				</div>
+				<div class="columns mt-1 prl-2-5">
+					<a class="button is-info is-outlined width-100 mrl-1">
+						<div class="column">
+							<i class="mdi mdi-content-paste"></i> Web Content
+						</div>
+					</a>
+					<a class="button is-info is-outlined width-100 mrl-1">
+						<div class="column">
+							<i class="mdi mdi-brush"></i> Web Design
+						</div>
+					</a>
+					<a class="button is-info is-outlined width-100 mrl-1">
+						<div class="column">
+							<i class="mdi mdi-hexagon-multiple"></i> Web Marketing
+						</div>
+					</a>
+					<a class="button is-info is-outlined width-100 mrl-1">
+						<div class="column">
+							<i class="mdi mdi-xml"></i> Web Programming
+						</div>
+					</a>
+				</div>
+			</div>
+			<div class="column"></div>
+		</div>
+
+
+		<button id="loginBtn">Facebook Login</button>
 
 
 
-<button id="loginBtn">Facebook Login</button>
 
-
-
-
-<button onclick="fbLogoutUser()">Facebook Logout</button>
-<div id="response"></div>
+		<button onclick="fbLogoutUser()">Facebook Logout</button>
+		<div id="response"></div>
 
 
 
@@ -75,6 +113,11 @@
 				$("#logo-ywc15").attr("src","ywc15/assets/image/logo/logo-click.png");
 			},function(){
 				$("#logo-ywc15").attr("src","ywc15/assets/image/logo/logo.png");
+			});
+
+
+			$.get("https://ywc15.ywc.in.th/api/interview",function(data){
+				console.log(data);
 			});
 
 
