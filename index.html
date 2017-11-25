@@ -130,10 +130,63 @@
 			</div>
 			<div class="column is-hidden-mobile"></div>
 		</div>
+		<hr>
 		<div class="columns">
 			<div class="column is-hidden-mobile"></div>
 			<div class="column is-four-fifths">
 				<h1 id="Emoticon" class="has-text-centered is-size-4"><i class="mdi mdi-emoticon mdi-24px"></i> <b>ตรวจสอบอารมณ์ของคุณ</b></h1>
+				<p class="has-text-centered is-size-6"><i>ลองส่งความรู้สึกมาเป็นรูปภาพให้เราได้รับรู้</i></p>
+				<div class="field mt-1">
+					<div class="file is-centered is-info">
+						<label class="file-label">
+							<input id="fileButton" class="file-input" type="file">
+							<span class="file-cta">
+								<span class="file-icon">
+									<i class="mdi mdi-cloud-upload mdi-24px"></i>
+								</span>
+								<span class="file-label">
+									Choose a file…
+								</span>
+							</span>
+							<span id="file-name" class="file-name">
+								You haven't file
+							</span>
+						</label>
+					</div>
+				</div>
+				<div id="textFile" class="mt-1" hidden="true">
+					<div class="columns">
+						<div class="column"></div>
+						<div class="column is-two-fifths notification is-danger has-text-centered">
+							<button class="delete" onclick="textFileHidden()"></button>
+							You must select jpg file! <i class="mdi mdi-file-account mdi-24px"></i>
+						</div>
+						<div class="column"></div>
+					</div>
+				</div>
+				<div id="processEmotion" class="prl-2-5" hidden="true">
+					<div class="columns">
+						<div class="column is-3 is-hidden-mobile"></div>
+						<div class="column is-6">
+							<img id="imageFile" style="width:100%;height:auto;">
+						</div>
+						<div class="column is-3 is-hidden-mobile"></div>
+					</div>
+					<div class="columns">
+						<div class="column is-3 is-hidden-mobile"></div>
+						<div class="card column is-6 has-text-centered">
+							<img id="iconEmotion" class="is-centered">
+							<br>
+							<b><span id="textEmotion" class="is-size-3"></span></b>
+						</div>
+						<div class="column is-3 is-hidden-mobile"></div>
+					</div>
+				</div>
+
+
+
+
+
 			</div>
 			<div class="column is-hidden-mobile"></div>
 		</div>
@@ -150,12 +203,21 @@
 
 		<script type="text/javascript" src="ywc15/assets/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a18146ed9da9a96"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
 		<script type="text/javascript">
 			var dataAPI;
 			var idTR;
+			var arrayEmotion=[["fear","ความรู้สึกกลัว"],["anger","ความรู้สึกโกรธ"],["sadness","ความรู้สึกเศร้า"],["surprise","ความรู้สึกแปลกใจ"],["disgust","ความรู้สึกรังเกียจ"],["contempt","ความรู้สึกหยิ่ง"],["neutral","ความรู้สึกปกติ"],["happiness","ความรู้สึกมีความสุข"]];
 			$.get("https://ywc15.ywc.in.th/api/interview",function(data){
 				dataAPI=data;
 			});
+			var config={
+				apiKey: "AIzaSyCos_A8Xjgbi33IPp8fI27VpabWLx6x5QI",
+				authDomain: "ywc15-187010.firebaseapp.com",
+				databaseURL: "https://ywc15-187010.firebaseio.com",
+				storageBucket: "ywc15-187010.appspot.com"
+			};
+			firebase.initializeApp(config);
 			$(document).ready(function(){
 				$("a").on('click', function(event) {
 					if (this.hash !== "") {
@@ -304,6 +366,81 @@
 				}
 				return value;
 			}
+			function textFileHidden(){
+				$("#textFile").hide();
+				$("#file-name").text("You haven't file");
+			}
+			$("#fileButton").change(function(e){
+  				var valueFile=$("#fileButton").val();
+  				var file=e.target.files[0];
+  				if(valueFile){
+  					$("#file-name").text(file["name"]);
+  				}else{
+  					$("#processEmotion").hide();
+  					$("#file-name").text("You haven't file");
+  				}
+				var fileType=file["type"];
+				var ValidImageTypes=["image/jpeg"];
+				if(fileType!=ValidImageTypes){
+					$("#textFile").show();
+				}else{
+					$("#textFile").hide();
+					var storageRef = firebase.storage().ref(file.name);
+					storageRef.put(file).then(function(snapshot){
+						$("#processEmotion").show();
+						var imageSRC=snapshot['a']['downloadURLs'][0];
+						$("#imageFile").attr("src",imageSRC);
+						var params={};
+						$.ajax({
+							url: "https://westus.api.cognitive.microsoft.com/emotion/v1.0/recognize?"+$.param(params),
+							beforeSend: function(xhrObj){
+							xhrObj.setRequestHeader("Content-Type","application/json");
+							xhrObj.setRequestHeader("Ocp-Apim-Subscription-Key","b1d769948a094847a3fd78c14446ae33");
+							},
+							type: "POST",
+							data: '{"url": "'+imageSRC+'"}',
+						}).done(function(data){
+							if(data.length>0){
+								var scores=data[0].scores;
+								var arrayScores=[];
+								for(var prop in scores) {
+									arrayScores.push([prop,scores[prop]]);
+								}
+								arrayScores.sort(function(a,b){
+									return b[1]-a[1];
+								});
+								setEmotion(arrayScores[0][0]);
+							}else{
+								$("#iconEmotion").attr("src",'ywc15/assets/image/emotion/icon_robot.png');
+								$("#textEmotion").text('ข้อมูลไม่เพียงพอในการวิเคราะห์');
+							}
+						}).fail(function(err){
+							$("#processEmotion").hide();
+							alert("Error: " + JSON.stringify(err));
+						});
+					});
+				}
+			});
+			function setEmotion(name){
+				var arrayEmotion=this.arrayEmotion;
+				var fileName='ywc15/assets/image/emotion/icon_'+name+'.png'
+				$("#iconEmotion").attr("src",fileName);
+				for (var item=0;item<arrayEmotion.length;item++){
+					if(arrayEmotion[item][0]==name){
+						$("#textEmotion").text(arrayEmotion[item][1]);
+						break;
+					}
+				}
+			}
+
+
+
+
+
+
+
+
+
 
 
 
