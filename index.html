@@ -40,7 +40,7 @@
 							<a href="#NewFinal" class="nav-item is-tab"><i class="mdi mdi-newspaper mdi-24px prltb-1"></i></a>
 							<a href="#Emoticon" class="nav-item is-tab"><i class="mdi mdi-emoticon mdi-24px prltb-1"></i></a>
 							<a href="#GPS" class="nav-item is-tab"><i class="mdi mdi-crosshairs-gps mdi-24px prltb-1"></i></a>
-							<a href="Chat" class="nav-item is-tab"><i class="mdi mdi-wechat mdi-24px prltb-1"></i></a>
+							<a href="#Chat" class="nav-item is-tab"><i class="mdi mdi-wechat mdi-24px prltb-1"></i></a>
 						</div>
 					</div>
 				</nav>
@@ -72,7 +72,7 @@
 						<a href="#GPS" class="link is-info"><b><i class="mdi mdi-crosshairs-gps"></i> แชร์ต่ำแหน่ง</b></a>
 					</p>
 					<p class="level-item has-text-centered">
-						<a href="Chat" class="link is-info"><b><i class="mdi mdi-wechat"></i> แชท</b></a>
+						<a href="#Chat" class="link is-info"><b><i class="mdi mdi-wechat"></i> แชท</b></a>
 					</p>
 				</nav>
 			</div>
@@ -182,25 +182,41 @@
 						<div class="column is-3 is-hidden-mobile"></div>
 					</div>
 				</div>
-
-
-
-
-
 			</div>
 			<div class="column is-hidden-mobile"></div>
 		</div>
-
-		<button id="loginBtn">Facebook Login</button>
-
-
-
-
-		<button onclick="fbLogoutUser()">Facebook Logout</button>
-		<div id="response"></div>
-
-
-
+		<hr>
+		<div class="columns">
+			<div class="column is-hidden-mobile"></div>
+			<div class="column is-four-fifths">
+				<h1 id="GPS" class="has-text-centered is-size-4"><i class="mdi mdi-crosshairs-gps mdi-24px"></i> <b>แชร์ต่ำแหน่ง</b></h1>
+				<p class="has-text-centered is-size-6"><i>ถ้าคุณคือหนึ่งในผู้เข้ารอบและอยากพบปะสังสรรค์ กรุณาลงชื่อเข้าใช้ผ่านทางFacebookและแชร์ต่ำแหน่งของคุณ</i></p>
+				<table class="width-100 mt-1">
+					<tbody>
+						<tr>
+							<td></td>
+							<td class="width-45">
+								<a id="loginBtn" class="button is-link is-large width-100">Facebook Login <i class="mdi mdi-facebook mdi-24px"></i></a>
+								<div id="logoutBtn" hidden="true">
+									<a onclick="fbLogoutUser()" class="button is-link is-large width-100">Facebook Logout <i class="mdi mdi-logout mdi-24px"></i></a>
+								</div>
+							</td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="has-text-centered mt-1">
+					<h3 id="userFacebook" class="is-size-5"></h3>
+				</div>
+				<div id="map" class="mt-1" hidden="true" style="width:100%;height:20em;"></div>
+			</div>
+			<div class="column is-hidden-mobile"></div>
+		</div>
+		<footer class="footer has-text-centered">
+			<div class="mastfoot has-text-centered">
+				<p>Copyright &copy; 2017 <a href="https://patipan-nakarin.com">Patipan Nakarin</a><br>All Rights Reserved</p>
+			</div>
+		</footer>
 		<script type="text/javascript" src="ywc15/assets/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a18146ed9da9a96"></script>
 		<script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
@@ -432,83 +448,111 @@
 					}
 				}
 			}
+			window.fbAsyncInit = function(){
+				FB.init({
+					appId:'361211327657399',
+					cookie:true,
+					xfbml:true,
+					version:'{latest-api-version}'
+				});
+				FB.AppEvents.logPageView();
+			};
+			(function(d, s, id){
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) {return;}
+				js = d.createElement(s); js.id = id;
+				js.src = "https://connect.facebook.net/en_US/sdk.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));	 
+			window.fbAsyncInit=function(){
+				FB.init({
+					appId:'361211327657399',
+					xfbml:true,
+					version:'v2.2'
+				});
+				FB.getLoginStatus(function(response) {
+					if(response.status==='connected') {
+						getUserData();
+					}else{
+					//user is not authorized
+					}
+				});
+			};
+			function getUserData(){
+				FB.api('/me', function(response){
+					console.log(response);
+					$("#userFacebook").text('ยินดีต้อนรับคุณ '+response.name+' ('+response.id+')');
+				});
+			}
+			(function(d, s, id){
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) {return;}
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.com/en_US/sdk.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
 
+			document.getElementById('loginBtn').addEventListener('click',function(){
+				FB.login(function(response){
+					if(response.authResponse){
+  						$("#loginBtn").hide();
+  						$("#logoutBtn").show();
+   						$("#map").show();
+   						initMap();
+						getUserData();
+					}
+				}, {scope: 'email,public_profile', return_scopes: true});
+			}, false);
+			function fbLogoutUser() {
+				FB.getLoginStatus(function(response) {
+					if (response && response.status === 'connected') {
+						FB.logout(function(response) {
+							document.location.reload();
+	  						$("#logoutBtn").hide();
+	  						$("#map").hide();
+	  						$("#loginBtn").show();
+	  						$("#userFacebook").text('');
+						});
+					}
+				});
+			}
 
+      var map, infoWindow;
+      function initMap(){
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 13.7274683, lng: 100.5304808},
+          zoom: 15
+        });
+        infoWindow = new google.maps.InfoWindow;
 
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            var pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
 
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('ต่ำแหน่งของฉัน');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
+        }
+      }
 
-
-
-
-
-
-
-
-
-
-
-		window.fbAsyncInit = function(){
-		FB.init({
-		appId:'361211327657399',
-		cookie:true,
-		xfbml:true,
-		version:'{latest-api-version}'
-		});
-		FB.AppEvents.logPageView();
-		};
-		(function(d, s, id){
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) {return;}
-		js = d.createElement(s); js.id = id;
-		js.src = "https://connect.facebook.net/en_US/sdk.js";
-		fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));	 
-		window.fbAsyncInit=function(){
-		FB.init({
-		appId:'361211327657399',
-		xfbml:true,
-		version:'v2.2'
-		});
-		FB.getLoginStatus(function(response) {
-		if(response.status==='connected') {
-		document.getElementById('loginBtn').style.display = 'none';
-		getUserData();
-		}else{
-		//user is not authorized
-		}
-		});
-		};
-		function getUserData() {
-		FB.api('/me', function(response) {
-		document.getElementById('response').innerHTML = 'Hello ' + response.name;
-		});
-		}
-		(function(d, s, id){
-		var js, fjs = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) {return;}
-		js = d.createElement(s); js.id = id;
-		js.src = "//connect.facebook.com/en_US/sdk.js";
-		fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-		document.getElementById('loginBtn').addEventListener('click',function(){
-		FB.login(function(response){
-		if(response.authResponse){
-		document.getElementById('loginBtn').style.display = 'none';
-		getUserData();
-		}
-		}, {scope: 'email,public_profile', return_scopes: true});
-		}, false);
-
-		function fbLogoutUser() {
-		FB.getLoginStatus(function(response) {
-		if (response && response.status === 'connected') {
-		FB.logout(function(response) {
-		document.location.reload();
-		});
-		}
-		});
-		}
-
-		</script>
+      function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+      }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBTR4EkddZCeAZ758TCZU5PRiVEGUEJQQ4&callback=initMap"></script>
 </body>
 </html>
