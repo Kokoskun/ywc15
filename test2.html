@@ -1,31 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>JSSample</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-</head>
+ <html>
+        <body>
+            <input type="file" id="fileButton"/>
 
 <h2>Face Rectangle</h2>
 <ul id="faceRectangle">
 <!-- Will populate list with response content -->
 </ul>
-
-<h2>Emotions</h2>
-<label for="file-upload" class="custom-file-upload">
-    Custom Upload
-</label>
-<input id="file-upload" type="file"/>
 <ul id="scores">
 <!-- Will populate list with response content -->
 </ul>
 
-<body>
 
-<script type="text/javascript">
+            <script src="https://www.gstatic.com/firebasejs/3.7.0/firebase.js"></script>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+            <script>
+            // Initialize Firebase
+                 var config = {
+                    apiKey: "AIzaSyCos_A8Xjgbi33IPp8fI27VpabWLx6x5QI",
+                    authDomain: "ywc15-187010.firebaseapp.com",
+                    databaseURL: "https://ywc15-187010.firebaseio.com",
+                    projectId: "ywc15-187010",
+                    storageBucket: "ywc15-187010.appspot.com",
+                    messagingSenderId: "87963932205"
+                };
+                firebase.initializeApp(config);
+           </script>
+           <script>
+var fileButton = document.getElementById("fileButton");
+fileButton.addEventListener('change',function(e){
+    var file = e.target.files[0];
+    var fileType = file["type"];
+    var ValidImageTypes = ["image/jpeg"];
+    if ($.inArray(fileType, ValidImageTypes) < 0) {
+        console.log("Not Image");
+    }else{
 
-$("input").change(function() {
-  var valueInput=$("#file-upload").val();
-  console.log(valueInput);
+
+                  var storageRef = firebase.storage().ref(file.name);
+                  storageRef.put(file).then(function(snapshot){
+
+                  var imageSRC=snapshot['a']['downloadURLs'][0];
+
+
+
+
 
         var params = { };
         $.ajax({
@@ -39,7 +57,7 @@ $("input").change(function() {
             },
             type: "POST",
             // Request body
-            data: '{"url": "https://patipan-nakarin.com/assets/images/about/about-me-photo.jpg"}',
+            data: '{"url": "'+imageSRC+'"}',
         }).done(function(data) {
             // Get face rectangle dimensions
             var faceRectangle = data[0].faceRectangle;
@@ -67,9 +85,25 @@ $("input").change(function() {
 
 
 
-});
 
 
-</script>
-</body>
+
+                });
+
+
+
+
+
+
+
+    }
+
+
+              });  
+
+
+
+
+           </script>
+      </body>
 </html>
