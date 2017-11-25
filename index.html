@@ -31,67 +31,104 @@
 				font-family: 'Athiti', sans-serif;
 			}
 		</style>
-		<div class="columns">
+		<div class="columns is-hidden-tablet">
+			<div class="column is-hidden-mobile"></div>
+			<div class="column is-four-fifths" style="background-color:#39729b;">
+				<nav class="level mt-1 is-hidden-tablet">
+					<div class="container">
+						<div class="nav-center has-text-centered">
+							<a href="#NewFinal" class="nav-item is-tab"><i class="mdi mdi-newspaper mdi-24px prltb-1"></i></a>
+							<a href="#Emoticon" class="nav-item is-tab"><i class="mdi mdi-emoticon mdi-24px prltb-1"></i></a>
+							<a href="#GPS" class="nav-item is-tab"><i class="mdi mdi-crosshairs-gps mdi-24px prltb-1"></i></a>
+							<a href="Chat" class="nav-item is-tab"><i class="mdi mdi-wechat mdi-24px prltb-1"></i></a>
+						</div>
+					</div>
+				</nav>
+			</div>
+			<div class="column is-hidden-mobile"></div>
+		</div>
+		<div class="columns is-hidden-tablet" style="background-color:#6ea4ca;">
+			<div class="column has-text-centered">
+				<img class="width-45" src="ywc15/assets/image/logo/logo-mobile.png">
+				<p class="is-size-3 color-ffffff mt--1">Welcome To My YWC15</p>
+				<p class="is-size-5 color-ffffff">Young Webmaster Camp ครั้งที่ 15</p>
+				<img class="mb-3 mt-4 width-45" src="ywc15/assets/image/qrcode.png">
+			</div>
+		</div>
+		<div class="columns is-hidden-mobile">
 			<div class="column"></div>
 			<div class="column is-four-fifths">
 				<nav class="level">
-					<p class="level-item has-text-centered is-hidden-mobile">
-						<a class="link is-info"><b><i class="mdi mdi-newspaper"></i> รายชื่อผู้ผ่านเข้ารอบ</b></a>
+					<p class="level-item has-text-centered">
+						<a class="link is-info"><b><i class="mdi mdi-newspaper"></i> ผู้ผ่านเข้ารอบ</b></a>
 					</p>
-					<p class="level-item has-text-centered is-hidden-mobile">
+					<p class="level-item has-text-centered">
 						<a class="link is-info"><b><i class="mdi mdi-emoticon"></i> ตรวจสอบอารมณ์</b></a>
 					</p>
 					<p class="level-item has-text-centered">
 						<img id="logo-ywc15" src="ywc15/assets/image/logo/logo.png">
 					</p>
-					<p class="level-item has-text-centered is-hidden-mobile">
+					<p class="level-item has-text-centered">
 						<a class="link is-info"><b><i class="mdi mdi-crosshairs-gps"></i> แชร์ต่ำแหน่ง</b></a>
 					</p>
-					<p class="level-item has-text-centered is-hidden-mobile">
+					<p class="level-item has-text-centered">
 						<a class="link is-info"><b><i class="mdi mdi-wechat"></i> แชท</b></a>
 					</p>
 				</nav>
 			</div>
 			<div class="column"></div>
 		</div>
-		<div class="columns">
-			<div class="column"></div>
+		<div id="NewFinal" class="columns">
+			<div class="column is-hidden-mobile"></div>
 			<div class="column is-four-fifths">
+				<br class="is-hidden-tablet">
 				<h1 class="has-text-centered is-size-4"><b>รายชื่อผู้ผ่านการคัดเลือก YWC15</b></h1>
 				<div class="field is-grouped mt-1 prl-2-5">
 					<p class="control is-expanded">
-						<input class="input" type="text" placeholder="ค้นหารายชื่อผู้ผ่านการคัดเลือก">
+						<input id="inputSearch" class="input" type="text" placeholder="ค้นหารายชื่อผู้ผ่านการคัดเลือก">
 					</p>
 					<p class="control">
-						<a class="button is-info">
-							&nbsp;<i class="mdi mdi-account-search"></i> Search&nbsp;
+						<a onclick="return clearInputUser()" class="button is-danger">
+							&nbsp;<i class="mdi mdi-close"></i> Clear&nbsp;
 						</a>
 					</p>
 				</div>
 				<div class="columns mt-1 prl-2-5">
-					<a class="button is-info is-outlined width-100 mrl-1">
+					<a id="trContent" class="button is-info is-outlined width-100 mrl-1" onclick="setUserFinal('trContent','content')">
 						<div class="column">
 							<i class="mdi mdi-content-paste"></i> Web Content
 						</div>
 					</a>
-					<a class="button is-info is-outlined width-100 mrl-1">
+					<a id="trDesign" class="button is-info is-outlined width-100 mrl-1" onclick="setUserFinal('trDesign','design')">
 						<div class="column">
 							<i class="mdi mdi-brush"></i> Web Design
 						</div>
 					</a>
-					<a class="button is-info is-outlined width-100 mrl-1">
+					<a id="trMarketing" class="button is-info is-outlined width-100 mrl-1" onclick="setUserFinal('trMarketing','marketing')">
 						<div class="column">
 							<i class="mdi mdi-hexagon-multiple"></i> Web Marketing
 						</div>
 					</a>
-					<a class="button is-info is-outlined width-100 mrl-1">
+					<a id="trProgramming" class="button is-info is-outlined width-100 mrl-1" onclick="setUserFinal('trProgramming','programming')">
 						<div class="column">
 							<i class="mdi mdi-xml"></i> Web Programming
 						</div>
 					</a>
 				</div>
+				<div class="prl-1-5">
+					<table id="tableUserFinal" class="width-100 mt-1 table is-hoverable is-bordered" hidden="true">
+						<thead>
+							<tr>
+								<th class="width-10 has-text-centered">หมายเลข</th>
+								<th class="width-45 has-text-centered">ชื่อจริง</th>
+								<th class="width-45 has-text-centered">นามสกุล</th>
+							</tr>
+						</thead>
+						<tbody id="userFinal" class="has-text-centered"></tbody>
+					</table>
+				</div>
 			</div>
-			<div class="column"></div>
+			<div class="column is-hidden-mobile"></div>
 		</div>
 
 
@@ -108,17 +145,163 @@
 		<script type="text/javascript" src="ywc15/assets/js/jquery-3.2.1.min.js"></script>
 		<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5a18146ed9da9a96"></script>
 		<script type="text/javascript">
-
-			$("#logo-ywc15").hover(function(){
-				$("#logo-ywc15").attr("src","ywc15/assets/image/logo/logo-click.png");
-			},function(){
-				$("#logo-ywc15").attr("src","ywc15/assets/image/logo/logo.png");
-			});
-
-
+			var dataAPI;
+			var idTR;
 			$.get("https://ywc15.ywc.in.th/api/interview",function(data){
-				console.log(data);
+				dataAPI=data;
 			});
+			$(document).ready(function(){
+				$("a").on('click', function(event) {
+					if (this.hash !== "") {
+						event.preventDefault();
+						var hash = this.hash;
+						$('html, body').animate({
+							scrollTop: $(hash).offset().top
+						}, 800, function(){
+						window.location.hash = hash;
+						});
+					}
+				});
+				$("#logo-ywc15").hover(function(){
+					$("#logo-ywc15").attr("src","ywc15/assets/image/logo/logo-click.png");
+				},function(){
+					$("#logo-ywc15").attr("src","ywc15/assets/image/logo/logo.png");
+				});
+			});
+			function removeUserFinal(){
+				$("#userFinal tr").remove();
+			}
+			function setStyleTR(idTR){
+				var idTRNow=this.idTR;
+				$('#'+idTR).css("background-color","#209cee");
+				$('#'+idTR).css("color","#ffffff");
+				if(idTRNow){
+					$('#'+idTRNow).css("background-color","#ffffff");
+					$('#'+idTRNow).css("color","#209cee");
+				}
+				if(idTRNow==idTR){
+					this.idTR=null;
+					return false;
+				}else{
+					this.idTR=idTR;
+					return true;
+				}
+			}
+			function setUserFinal(idTR,groupName){
+				$("#inputSearch").val('');
+				var isTR=this.setStyleTR(idTR);
+				this.removeUserFinal();
+				if(isTR){
+					this.checkTableUser(groupName);
+					$("#tableUserFinal").show();
+				}else{
+					$("#tableUserFinal").hide();
+				}
+			}
+			function checkTableUser(groupName){
+				var arrayUser=[];
+				var dataAPI=this.dataAPI;
+				for(var item=0;item<dataAPI.length;item++){
+					if(dataAPI[item]["major"]==groupName){
+						var number=parseInt(dataAPI[item]["interviewRef"].slice(2));
+						arrayUser[arrayUser.length]=[
+							number,dataAPI[item]["interviewRef"],dataAPI[item]["firstName"],dataAPI[item]["lastName"]
+						];
+					}
+				}
+				arrayUser.sort(function(a,b){
+					return a[0] - b[0];
+				});
+				this.createUserFinal(arrayUser);
+			}
+			function createUserFinal(arrayUser){
+				var table,row,cell1,cell2,cell3;
+				for(var item=0;item<arrayUser.length;item++){
+					table = document.getElementById("userFinal");
+					row = table.insertRow(item);
+					cell1 = row.insertCell(0);
+					cell2 = row.insertCell(1);
+					cell3 = row.insertCell(2);
+					cell1.innerHTML = arrayUser[item][1];
+					cell2.innerHTML = arrayUser[item][2];
+					cell3.innerHTML = arrayUser[item][3];
+					cell1.setAttribute('class','has-text-centered');
+					cell2.setAttribute('class','has-text-centered');
+					cell3.setAttribute('class','has-text-centered');
+				}
+			}
+			$("#inputSearch").keyup(function(event) {
+				checkInputUser();
+			});
+			function clearInputUser(){
+				var isTR=this.setStyleTR(null);
+				$("#inputSearch").val('');
+				this.removeUserFinal();
+				$("#tableUserFinal").hide();
+			}
+			function checkInputUser(){
+				var valueInput=$("#inputSearch").val();
+				valueInput=this.reInputUser(valueInput);
+				var isTR=this.setStyleTR(null);
+				this.removeUserFinal();
+				if(valueInput!=''){
+					this.setInputUser(valueInput);
+				}else{
+					$("#tableUserFinal").hide();
+				}
+			}
+			function setInputUser(valueInput){
+				var arrayUser=[];
+				var dataAPI=this.dataAPI;
+				var firstName,lastName,fullName,number=null;
+				var isFirst,isLast,isFull=false;
+				for(var item=0;item<dataAPI.length;item++){
+					firstName=dataAPI[item]["firstName"];
+					lastName=dataAPI[item]["lastName"];
+					fullName=firstName+lastName;
+					isFirst=checkName(valueInput,firstName);
+					isLast=checkName(valueInput,lastName);
+					isFull=checkName(valueInput,fullName);
+					if(isFirst||isLast||isFull){
+						number=parseInt(dataAPI[item]["interviewRef"].slice(2));
+						arrayUser[arrayUser.length]=[
+							number,dataAPI[item]["interviewRef"],dataAPI[item]["firstName"],dataAPI[item]["lastName"]
+						];
+					}
+				}
+				arrayUser.sort(function(a,b){
+					return a[0] - b[0];
+				});
+				if(arrayUser.length!=0){
+					$("#tableUserFinal").show();
+					this.createUserFinal(arrayUser);
+				}else{
+					$("#tableUserFinal").hide();
+				}
+			}
+			function checkName(valueInput,valueName){
+				var value='';
+				for(var item=0;item<valueName.length;item++){
+					if(value==valueInput){
+						return true;
+					}
+					value=value+valueName[item];
+				}
+				return false;
+			}
+			function reInputUser(valueInput){
+				var value='';
+				for(var item=0;item<valueInput.length;item++){
+					if(valueInput[item]!=' '){
+						value=value+valueInput[item];
+					}
+				}
+				return value;
+			}
+
+
+
+
 
 
 		window.fbAsyncInit = function(){
