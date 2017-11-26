@@ -9,6 +9,7 @@ var urlsToCache = [
   '/assets/css/bulma.css',
   '/assets/css/materialdesignicons.min.css',
   '/assets/css/style.css',
+  '/assets/css/loading.css',
   '/assets/fonts/materialdesignicons-webfont.eot',
   '/assets/fonts/materialdesignicons-webfont.svg',
   '/assets/fonts/materialdesignicons-webfont.ttf',

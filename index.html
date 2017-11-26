@@ -24,6 +24,7 @@
 		<link rel="stylesheet" type="text/css" href="assets/css/materialdesignicons.min.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/bulma.css">
 		<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+		<link rel="stylesheet" type="text/css" href="assets/css/loading.css">
 	</head>
 	<body>
 		<style type="text/css">
@@ -216,20 +217,20 @@
 				<h1 id="Profile" class="has-text-centered is-size-4"><i class="mdi mdi-face mdi-24px"></i> <b>เกี่ยวกับผู้พัฒนา</b></h1>
 				<p class="has-text-centered mt-1 mb-1">Email:<a href="mailto:kokoskun@gmail.com">kokoskun@gmail.com</a> , Phone:<a href="tel:+66-84-677-6920">(+66)-84-677-6920</a> <br> <b>Profile: </b><a href="https://patipan-nakarin.com/" target="_blank">https://patipan-nakarin.com</a></p>
 				<div class="columns has-text-centered">
-					<div class="column is-3 prl-3-5 is-hidden-mobile">
-						<img class="is-hidden-mobile" src="assets/image/95846.jpg" style="width:100%;height:auto;">
+					<div onmouseover="actionImageOverJumpC('ImageMF')" class="column is-3 prl-3-5 is-hidden-mobile">
+						<img id="ImageMF" class="is-hidden-mobile" src="assets/image/95846.jpg" style="width:100%;height:auto;">
 						<p class="has-text-centered"><b>Messenger</b></p>
 					</div>
-					<div class="column is-3 prl-3-5">
-						<img class="is-hidden-mobile" src="assets/image/facebook.png" style="width:100%;height:auto;">
+					<div onmouseover="actionImageOverJumpC('ImageFacebook')" class="column is-3 prl-3-5">
+						<img id="ImageFacebook" class="is-hidden-mobile" src="assets/image/facebook.png" style="width:100%;height:auto;">
 							<p class="has-text-centered"><b>Facebook</b> <a href="https://www.facebook.com/patipan.nakarin" target="_blank">Link</a></p>
 					</div>
-					<div class="column is-3 prl-3-5">
-						<img class="is-hidden-mobile" src="assets/image/line.jpg" style="width:100%;height:auto;">
+					<div onmouseover="actionImageOverJumpC('ImageLine')" class="column is-3 prl-3-5">
+						<img id="ImageLine" class="is-hidden-mobile" src="assets/image/line.jpg" style="width:100%;height:auto;">
 						<p class="has-text-centered"><b>Line</b> <a href="http://line.me/ti/p/~noasiveryoni" target="_blank">Link</a></p>
 					</div>
-					<div class="column is-3 prl-3-5">
-						<img class="is-hidden-mobile" src="assets/image/linkedin.png" style="width:100%;height:auto;">
+					<div onmouseover="actionImageOverJumpC('ImageLinkedin')" class="column is-3 prl-3-5">
+						<img id="ImageLinkedin" class="is-hidden-mobile" src="assets/image/linkedin.png" style="width:100%;height:auto;">
 						<p class="has-text-centered"><b>Linkedin</b> <a href="https://th.linkedin.com/in/patipannakarin" target="_blank">Link</a></p>
 					</div>
 				</div>
@@ -647,6 +648,10 @@
 				lng: lng,
 				lat : lat
 			});
+		}
+		function actionImageOverJumpC(localImage){
+			$('#'+localImage).addClass("ld ld-jump x4");
+			setTimeout(function(){ $('#'+localImage).removeClass("ld ld-jump x4"); },1500);		 
 		}
 	    if('serviceWorker' in navigator) {
 	        navigator.serviceWorker.register("service-worker.js").then(function(registration) {
