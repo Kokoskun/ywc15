@@ -19,6 +19,9 @@
 .mb-2{
   margin-bottom:2em;
 }
+.mb-1{
+  margin-bottom:1em;
+}
 .width-100{
   width: 100%;
 }
@@ -36,6 +39,10 @@
 .prl-2-5{
   padding-left:2.5em;
   padding-right:2.5em;
+}
+.prl-3-5{
+  padding-left:3.5em;
+  padding-right:3.5em;
 }
 .prl-1-5{
   padding-left:1.5em;
